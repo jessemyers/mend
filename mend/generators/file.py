@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import BinaryIO, Iterable, Type
 
-from click import Option, Parameter, Path
+from click import Argument, Parameter, Path
 
 from mend.protocols import Generator, Tree
 
@@ -25,9 +25,9 @@ class FileGenerator(Generator):
 
     @classmethod
     def iter_parameters(cls: Type["FileGenerator"]) -> Iterable[Parameter]:
-        yield Option(
+        yield Argument(
             [
-                "--path",
+                "path",
             ],
             required=True,
             type=Path(

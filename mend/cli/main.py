@@ -1,15 +1,12 @@
-from click import group
+from click import command
 
-from mend.cli.generators import create_generator_commands
+from mend.cli.generators import GeneratorGroup
 
 
-@group()
+@command(cls=GeneratorGroup)
 def main(*args, **kwargs) -> None:
     """
     Mend, update, and repair git respositories.
 
     """
     pass
-
-
-create_generator_commands(main)
