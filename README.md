@@ -24,8 +24,8 @@ Both generators and plugins use `setuptools` `entry_points` for extensibility: t
 CLI reflects the known instances of both types and allows `Generator` and `Plugin` implementations
 to provide custom CLI parameters.
 
-A simple example:
+For example, the `.circlci/config.yml` file in this repo was generated using:
 
 ```sh
-mend file /path/to/file echo
+mend circleci --project mend copy --path .
 ```

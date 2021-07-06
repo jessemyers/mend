@@ -40,9 +40,11 @@ setup(
             "mend = mend.cli.main:main",
         ],
         "mend.generators": [
+            "circleci = mend.generators.circleci:CircleCIGenerator",
             "file = mend.generators.file:FileGenerator",
         ],
         "mend.plugins": [
+            "copy = mend.plugins.copy:CopyPlugin",
             "diff = mend.plugins.diff:DiffPlugin",
             "echo = mend.plugins.echo:EchoPlugin",
         ],
@@ -61,8 +63,9 @@ setup(
             "flake8-print>=4.0.0",
         ],
         test=[
+            "pytest>=6.2.4",
         ],
-        typehinting=[
+        types=[
             "mypy>=0.910.0",
             "types-setuptools>=57.0.0",
         ],

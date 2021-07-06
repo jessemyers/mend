@@ -40,7 +40,7 @@ class GeneratorGroup(MultiCommand):
 
                 with closing(generator):
                     tree = generator.generate()
-                    plugin.mend(tree)
+                    plugin.apply(tree)
 
         return PluginGroup(
             help=cleandoc(cls.__doc__) if cls.__doc__ else None,

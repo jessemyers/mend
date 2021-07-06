@@ -7,5 +7,5 @@ class Plugin(WithParameters["Plugin"]):
     def close(self) -> None:
         pass
 
-    def mend(self, tree: Tree) -> None:
+    def apply(self, tree: Tree) -> None:
         raise NotImplementedError

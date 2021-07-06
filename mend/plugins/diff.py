@@ -25,7 +25,7 @@ class DiffPlugin(Plugin):
     def close(self) -> None:
         self.blob.close()
 
-    def mend(self, right_tree: Tree) -> None:
+    def apply(self, right_tree: Tree) -> None:
         """
         Compute a diff over files in the local and generated trees.
 
