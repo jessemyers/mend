@@ -65,6 +65,31 @@ jobs:
             . venv/bin/activate
             mypy mend
 
+  release:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/python:3.9.6
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+      - run:
+          name: create distributions
+          command: |
+            . venv/bin/activate
+            python setup.py sdist
+            python setup.py bdist_wheel
+      - run:
+          name: upload to pypi
+          command: |
+            . venv/bin/activate
+            twine upload dist/*
+
 workflows:
   version: 2
   build:
@@ -73,9 +98,28 @@ workflows:
       - lint:
           requires:
             - install
+          filters:
+            tags:
+              only: /.*/
       - test:
           requires:
             - install
+          filters:
+            tags:
+              only: /.*/
       - types:
           requires:
             - install
+          filters:
+            tags:
+              only: /.*/
+      - release:
+          requires:
+            - test
+            - lint
+            - types
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^[0-9]+(\.[0-9]+)*/
