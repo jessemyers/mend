@@ -39,6 +39,12 @@ setup(
         "console_scripts": [
             "mend = mend.cli.main:main",
         ],
+        "mend.generators": [
+            "hello = mend.generators.hello:Hello",
+        ],
+        "mend.plugins": [
+            "echo = mend.plugins.echo:Echo",
+        ],
     },
     extras_require=dict(
         dist=[
@@ -57,6 +63,7 @@ setup(
         ],
         typehinting=[
             "mypy>=0.910.0",
+            "types-setuptools>=57.0.0",
         ],
     ),
 )
