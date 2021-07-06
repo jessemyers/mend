@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import BinaryIO, Iterable, Type
+from typing import Iterable, Type
 
 from click import Argument, Parameter, Path
 
+from mend.files import FileBlob
 from mend.protocols import Generator, Tree
 
 
@@ -12,17 +13,13 @@ class FileGenerator(Generator):
     Generate from a local file.
 
     """
-    blob: BinaryIO
-    name: str
-    path: str
+    blob: FileBlob
 
     def close(self) -> None:
         self.blob.close()
 
     def generate(self) -> Tree:
-        return {
-            self.name: self.blob,
-        }
+        return self.blob.as_tree()
 
     @classmethod
     def iter_parameters(cls: Type["FileGenerator"]) -> Iterable[Parameter]:
@@ -52,7 +49,5 @@ class FileGenerator(Generator):
         path = kwargs["path"]
 
         return cls(
-            blob=open(path, "rb"),
-            name="file",
-            path=path,
+            blob=FileBlob.open(path, name="file"),
         )

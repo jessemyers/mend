@@ -10,6 +10,7 @@ from click import (
     style,
 )
 
+from mend.files import FileBlob
 from mend.protocols import Blob, Plugin, Tree
 
 
@@ -19,13 +20,25 @@ class DiffPlugin(Plugin):
     Calculate difference between generated source and path.
 
     """
-    name: str
-    path: str
+    blob: FileBlob
 
-    def mend(self, tree: Tree) -> None:
-        with open(self.path, "rb") as left:
-            right = tree.get(self.name)
-            for item in self.diff(self.name, left, right):
+    def close(self) -> None:
+        self.blob.close()
+
+    def mend(self, right_tree: Tree) -> None:
+        """
+        Compute a diff over files in the local and generated trees.
+
+        """
+        left_tree = self.blob.as_tree()
+
+        names = left_tree.keys() | right_tree.keys()
+
+        for name in names:
+            left = left_tree.get(name)
+            right = right_tree.get(name)
+
+            for item in self.diff(name, left, right):
                 echo(item.strip("\n"))
 
     def diff(self, name: str, left: Optional[Blob], right: Optional[Blob]) -> Iterable[str]:
@@ -35,8 +48,8 @@ class DiffPlugin(Plugin):
         """
         left_lines = left.read().decode("utf-8").splitlines() if left else []
         right_lines = right.read().decode("utf-8").splitlines() if right else []
-        left_name = f"{name} - generated"
-        right_name = f"{name} - original"
+        left_name = f"{name} - original"
+        right_name = f"{name} - generated"
 
         lines = unified_diff(left_lines, right_lines, left_name, right_name, lineterm="")
 
@@ -78,6 +91,5 @@ class DiffPlugin(Plugin):
         path = kwargs["path"]
 
         return cls(
-            path=path,
-            name="file",
+            blob=FileBlob.open(path, name="file")
         )

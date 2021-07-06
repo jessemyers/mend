@@ -35,10 +35,12 @@ class GeneratorGroup(MultiCommand):
             return None
 
         def execute(plugin: Plugin, **kwargs):
-            generator = cls.from_parameters(**kwargs)
-            with closing(generator):
-                tree = generator.generate()
-                plugin.mend(tree)
+            with closing(plugin):
+                generator = cls.from_parameters(**kwargs)
+
+                with closing(generator):
+                    tree = generator.generate()
+                    plugin.mend(tree)
 
         return PluginGroup(
             help=cleandoc(cls.__doc__) if cls.__doc__ else None,
