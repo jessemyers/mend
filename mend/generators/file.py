@@ -34,7 +34,7 @@ class FileGenerator(Generator):
                 dir_okay=False,
                 exists=True,
                 file_okay=True,
-                path_type=str,
+                path_type=Path,
                 readable=True,
                 resolve_path=True,
                 writable=False,
