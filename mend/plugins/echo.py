@@ -1,4 +1,4 @@
-from click import echo
+from click import echo, style
 
 from mend.protocols import Plugin, Tree
 
@@ -9,5 +9,8 @@ class EchoPlugin(Plugin):
 
     """
     def mend(self, tree: Tree) -> None:
-        for key in tree:
-            echo(key)
+        for name, blob in tree.items():
+            echo(style(f"# {name}", fg="green"))
+            lines = blob.read().decode("utf-8").splitlines()
+            for line in lines:
+                echo(line)
