@@ -40,7 +40,7 @@ setup(
             "mend = mend.cli.main:main",
         ],
         "mend.generators": [
-            "hello = mend.generators.hello:Hello",
+            "file = mend.generators.file:FileGenerator",
         ],
         "mend.plugins": [
             "echo = mend.plugins.echo:Echo",
