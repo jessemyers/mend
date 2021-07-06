@@ -43,7 +43,8 @@ setup(
             "file = mend.generators.file:FileGenerator",
         ],
         "mend.plugins": [
-            "echo = mend.plugins.echo:Echo",
+            "diff = mend.plugins.diff:DiffPlugin",
+            "echo = mend.plugins.echo:EchoPlugin",
         ],
     },
     extras_require=dict(
