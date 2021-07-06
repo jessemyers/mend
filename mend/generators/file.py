@@ -13,6 +13,7 @@ class FileGenerator(Generator):
 
     """
     blob: BinaryIO
+    name: str
     path: str
 
     def close(self) -> None:
@@ -20,7 +21,7 @@ class FileGenerator(Generator):
 
     def generate(self) -> Tree:
         return {
-            self.path: self.blob,
+            self.name: self.blob,
         }
 
     @classmethod
@@ -52,5 +53,6 @@ class FileGenerator(Generator):
 
         return cls(
             blob=open(path, "rb"),
+            name="file",
             path=path,
         )

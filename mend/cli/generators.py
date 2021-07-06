@@ -1,3 +1,4 @@
+from contextlib import closing
 from inspect import cleandoc
 from pkg_resources import get_entry_map
 from typing import List, Optional, Type
@@ -35,8 +36,9 @@ class GeneratorGroup(MultiCommand):
 
         def execute(plugin: Plugin, **kwargs):
             generator = cls.from_parameters(**kwargs)
-            tree = generator.generate()
-            plugin.mend(tree)
+            with closing(generator):
+                tree = generator.generate()
+                plugin.mend(tree)
 
         return PluginGroup(
             help=cleandoc(cls.__doc__) if cls.__doc__ else None,
