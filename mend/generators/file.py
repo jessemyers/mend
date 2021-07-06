@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable, Type
 
-from click import Argument, Parameter, Path
+from click import Argument, Parameter, Path as PathType
 
 from mend.files import FileBlob
 from mend.protocols import Generator, Tree
@@ -28,7 +29,7 @@ class FileGenerator(Generator):
                 "path",
             ],
             required=True,
-            type=Path(
+            type=PathType(
                 allow_dash=False,
                 dir_okay=False,
                 exists=True,
@@ -49,5 +50,8 @@ class FileGenerator(Generator):
         path = kwargs["path"]
 
         return cls(
-            blob=FileBlob.open(path, name="file"),
+            blob=FileBlob.open(
+                path=path,
+                name="file",
+            ),
         )

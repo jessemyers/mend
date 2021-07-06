@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from difflib import unified_diff
+from pathlib import Path
 from typing import Iterable, Optional, Type
 
 from click import (
     Option,
     Parameter,
-    Path,
+    Path as PathType,
     echo,
     style,
 )
@@ -70,12 +71,12 @@ class DiffPlugin(Plugin):
                 "--path",
             ],
             required=True,
-            type=Path(
+            type=PathType(
                 allow_dash=False,
                 dir_okay=False,
                 exists=True,
                 file_okay=True,
-                path_type=str,
+                path_type=Path,
                 readable=True,
                 resolve_path=True,
                 writable=False,
@@ -91,5 +92,8 @@ class DiffPlugin(Plugin):
         path = kwargs["path"]
 
         return cls(
-            blob=FileBlob.open(path, name="file")
+            blob=FileBlob.open(
+                path=path,
+                name="file",
+            ),
         )

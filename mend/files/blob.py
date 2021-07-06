@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 from typing import BinaryIO, Optional, Type
 
 from mend.protocols import Blob, Tree
@@ -20,10 +21,10 @@ class FileBlob(Blob):
     @classmethod
     def open(
             cls: Type["FileBlob"],
-            path: str,
+            path: Path,
             name: Optional[str] = None,
     ) -> "FileBlob":
         return cls(
             data=open(path, "rb"),
-            name=name or path,
+            name=name or str(path),
         )
