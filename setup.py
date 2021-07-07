@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 
 project = "mend"
-version = "0.2.0"
+version = "0.3.0"
 
 
 url = "https://github.com/jessemyers/mend"
