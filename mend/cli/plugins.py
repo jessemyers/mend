@@ -1,5 +1,5 @@
 from inspect import cleandoc
-from pkg_resources import get_entry_map
+from pkg_resources import iter_entry_points
 from typing import List, Optional, Type
 
 from click import Command, Context, MultiCommand
@@ -9,8 +9,8 @@ from mend.protocols import Plugin
 
 def load_plugins() -> dict[str, Type[Plugin]]:
     return {
-        name: module.load()
-        for name, module in get_entry_map("mend", "mend.plugins").items()
+        entry_point.name: entry_point.load()
+        for entry_point in iter_entry_points("mend.plugins")
     }
 
 
