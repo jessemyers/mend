@@ -98,28 +98,38 @@ workflows:
       - lint:
           requires:
             - install
+      - test:
+          requires:
+            - install
+      - types:
+          requires:
+            - install
+  release:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
           filters:
             tags:
-              only: /.*/
+              only: /^[0-9]+(\.[0-9]+)*/
       - test:
           requires:
             - install
           filters:
             tags:
-              only: /.*/
+              only: /^[0-9]+(\.[0-9]+)*/
       - types:
           requires:
             - install
           filters:
             tags:
-              only: /.*/
+              only: /^[0-9]+(\.[0-9]+)*/
       - release:
           requires:
             - test
             - lint
             - types
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^[0-9]+(\.[0-9]+)*/
