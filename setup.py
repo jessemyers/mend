@@ -40,7 +40,6 @@ setup(
             "mend = mend.cli.main:main",
         ],
         "mend.generators": [
-            "circleci = mend.generators.circleci:CircleCIGenerator",
             "file = mend.generators.file:FileGenerator",
         ],
         "mend.plugins": [
