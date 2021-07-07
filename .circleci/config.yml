@@ -73,19 +73,19 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
-          name: init .pypirc
+          name: Configure .pypirc
           command: |
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
       - run:
-          name: create distributions
+          name: Create distributions
           command: |
             . venv/bin/activate
             python setup.py sdist
             python setup.py bdist_wheel
       - run:
-          name: upload to pypi
+          name: Upload to pypi
           command: |
             . venv/bin/activate
             twine upload dist/*

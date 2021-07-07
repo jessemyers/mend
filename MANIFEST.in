@@ -1,1 +1,1 @@
-recursive-include mend/templates *.yml
+recursive-include mend/templates *.jinja *.yml
