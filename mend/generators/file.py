@@ -2,7 +2,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Type
 
-from click import Argument, Parameter, Path as PathType
+from click import (
+    Argument,
+    Option,
+    Parameter,
+    Path as PathType,
+)
 
 from mend.files import FileBlob
 from mend.protocols import Generator, Tree
@@ -24,6 +29,13 @@ class FileGenerator(Generator):
 
     @classmethod
     def iter_parameters(cls: Type["FileGenerator"]) -> Iterable[Parameter]:
+        yield Option(
+            [
+                "--use-path-as-name",
+                "-u",
+            ],
+            is_flag=True,
+        )
         yield Argument(
             [
                 "path",
@@ -47,11 +59,12 @@ class FileGenerator(Generator):
             *args,
             **kwargs,
     ) -> "FileGenerator":
+        use_path_as_name = kwargs["use_path_as_name"]
         path = kwargs["path"]
 
         return cls(
             blob=FileBlob.open(
                 path=path,
-                name="file",
+                name=path if use_path_as_name else "file",
             ),
         )

@@ -33,6 +33,7 @@ setup(
     ],
     install_requires=[
         "click>=8.0.1",
+        "PyGithub>=1.55",
         "jinja2>=3.0.1",
     ],
     entry_points={
@@ -45,7 +46,7 @@ setup(
         "mend.plugins": [
             "copy = mend.plugins.copy:CopyPlugin",
             "diff = mend.plugins.diff:DiffPlugin",
-            "echo = mend.plugins.echo:EchoPlugin",
+            "github = mend.plugins.github:GitHubPlugin",
         ],
     },
     extras_require=dict(
