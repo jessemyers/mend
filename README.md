@@ -27,5 +27,5 @@ to provide custom CLI parameters.
 For example, the `.circlci/config.yml` file in this repo was generated using:
 
 ```sh
-mend circleci --project mend copy --path .
+mend circleci-python-library --project mend copy --path .
 ```
