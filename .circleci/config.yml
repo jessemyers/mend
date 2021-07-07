@@ -111,18 +111,24 @@ workflows:
           requires:
             - install
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^[0-9]+(\.[0-9]+)*/
       - test:
           requires:
             - install
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^[0-9]+(\.[0-9]+)*/
       - types:
           requires:
             - install
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^[0-9]+(\.[0-9]+)*/
       - release:
@@ -131,5 +137,7 @@ workflows:
             - lint
             - types
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^[0-9]+(\.[0-9]+)*/
