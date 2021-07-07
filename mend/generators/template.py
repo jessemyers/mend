@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from io import BytesIO
+from pathlib import Path
 from typing import Any, Callable
 
 from jinja2 import BaseLoader, Environment, StrictUndefined
@@ -7,8 +8,18 @@ from jinja2 import BaseLoader, Environment, StrictUndefined
 from mend.protocols import Generator, Tree
 
 
-def is_temporary(path: str) -> bool:
-    return not path.endswith("~")
+def default_filter_func(value: str) -> bool:
+    path = Path(value)
+
+    # NB: ignore temporary files
+    if path.name.endswith("~"):
+        return False
+
+    # NB: ignore internal files
+    if path.name.startswith("_"):
+        return False
+
+    return True
 
 
 FilterFunc = Callable[[str], bool]
@@ -22,7 +33,7 @@ class TemplateGenerator(Generator):
     """
     loader: BaseLoader
     context: dict[str, Any] = field(default_factory=dict)
-    filter_func: FilterFunc = is_temporary
+    filter_func: FilterFunc = default_filter_func
 
     def make_environment(self) -> Environment:
         return Environment(

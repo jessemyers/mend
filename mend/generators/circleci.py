@@ -16,6 +16,12 @@ class CircleCIGenerator(TemplateGenerator):
             ],
             required=True,
         )
+        yield Option(
+            [
+                "--image",
+            ],
+            default="cimg/python:3.9.6",
+        )
 
     @classmethod
     def from_parameters(
