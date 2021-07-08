@@ -3,9 +3,20 @@ from mend.protocols.tree import Tree
 
 
 class Generator(WithParameters["Generator"]):
+    """
+    A generator supports producing a tree.
+
+    """
+    def generate(self) -> Tree:
+        """
+        Generate a `Tree`.
+
+        """
+        raise NotImplementedError
 
     def close(self) -> None:
-        pass
+        """
+        A generator may be closed.
 
-    def generate(self) -> Tree:
-        raise NotImplementedError
+        """
+        pass

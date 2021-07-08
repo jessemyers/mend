@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from jinja2 import DictLoader
 
 from mend.generators.template import TemplateGenerator
@@ -15,10 +17,10 @@ def test_template_generator() -> None:
 
     tree = generator.generate()
 
-    assert len(tree) == 1
-    assert "foo" in tree
+    assert len(tree.blobs) == 1
+    assert Path("foo") in tree.blobs
 
-    blob = tree["foo"]
+    blob = tree.blobs[Path("foo")]
     data = blob.read().decode("utf-8")
 
     assert data == "baz"

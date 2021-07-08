@@ -3,9 +3,20 @@ from mend.protocols.tree import Tree
 
 
 class Plugin(WithParameters["Plugin"]):
+    """
+    A plugin supports applying a generated `Tree` in some way.
+
+    """
+    def apply(self, tree: Tree) -> None:
+        """
+        Apply the plugin to a `Tree`.
+
+        """
+        raise NotImplementedError
 
     def close(self) -> None:
-        pass
+        """
+        A plugin may be closed.
 
-    def apply(self, tree: Tree) -> None:
-        raise NotImplementedError
+        """
+        pass

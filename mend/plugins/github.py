@@ -23,8 +23,8 @@ from mend.protocols import Plugin, Tree
 NORMAL_FILE_MODE = "100644"
 
 
-def normalize_path(path: str) -> str:
-    return str(Path(path).relative_to(Path.cwd()))
+def normalize_path(path: Path) -> str:
+    return str(path.relative_to(Path.cwd()))
 
 
 @dataclass(frozen=True)
@@ -86,14 +86,14 @@ class GitHubPlugin(Plugin):
 
         base_tree = self.repository.get_git_tree(branch.commit.sha)
 
-        echo(f"Creating {len(tree)} git blob(s).")
+        echo(f"Creating {len(tree.blobs)} git blob(s).")
 
         git_blobs = {
             path: self.repository.create_git_blob(
                 content=blob.read().decode("utf-8"),
                 encoding="utf-8",
             )
-            for path, blob in tree.items()
+            for path, blob in tree.blobs.items()
         }
 
         echo("Creating a new git tree from blob(s).")
@@ -115,13 +115,13 @@ class GitHubPlugin(Plugin):
 
         git_commit = self.repository.create_git_commit(
             message=(
-                f"""mend: applying changes to ${len(tree)} files
+                f"""mend: applying changes to ${len(tree.blobs)} files
 
                 Includes:
                 """
                 "\n".join(
                     f" - {path}"
-                    for path in sorted(tree.keys())
+                    for path in sorted(tree.blobs.keys())
                 )
             ),
             tree=git_tree,
