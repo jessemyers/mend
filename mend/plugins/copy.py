@@ -2,34 +2,41 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Type
 
-from click import Option, Parameter, Path as PathType
+from click import (
+    Argument,
+    Parameter,
+    Path as PathType,
+    echo,
+)
 
 from mend.protocols import Plugin, Tree
 
 
 @dataclass(frozen=True)
 class CopyPlugin(Plugin):
-    path: Path
+    directory: Path
 
     def apply(self, tree: Tree) -> None:
-        for name, blob in tree.items():
-            path = self.path / name
-            path.parent.mkdir(parents=True, exist_ok=True)
+        for path, blob in tree.blobs.items():
+            destination = self.directory / path.name
+            echo(f"Copying data to: {destination}")
 
-            with open(path, "wb") as fileobj:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+
+            with open(destination, "wb") as fileobj:
                 fileobj.write(blob.read())
 
     @classmethod
     def iter_parameters(cls: Type["CopyPlugin"]) -> Iterable[Parameter]:
-        yield Option(
+        yield Argument(
             [
-                "--path",
+                "directory",
             ],
             required=True,
             type=PathType(
                 allow_dash=False,
                 dir_okay=True,
-                exists=True,
+                exists=False,
                 file_okay=False,
                 path_type=Path,
                 readable=True,
@@ -44,8 +51,8 @@ class CopyPlugin(Plugin):
             *args,
             **kwargs,
     ) -> "CopyPlugin":
-        path = kwargs["path"]
+        directory = kwargs["directory"]
 
         return cls(
-            path=path,
+            directory=directory,
         )
